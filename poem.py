@@ -6,8 +6,8 @@ import google.generativeai as genai
 from io import BytesIO
 
 # --- Configure Gemini API ---
-genai.configure(api_key="AIzaSyBJJM78BQX51IYLYMq995g7lVWw-Bkpsoo")
-model = genai.GenerativeModel("gemini-1.5-flash")  # You can use "gemini-pro" if needed
+genai.configure(api_key="YOUR_API_KEY_HERE")  # Replace with your actual API key
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 # --- Streamlit App Setup ---
 st.set_page_config(page_title="PoeticLoveAI", page_icon="💘", layout="centered")
@@ -54,6 +54,12 @@ if st.session_state['output']:
         pdf.multi_cell(0, 10, line)
 
     pdf_buffer = BytesIO()
-    pdf_bytes = pdf.output(dest='S').encode('latin1')
-    pdf_buffer.write(pdf_bytes)
+    pdf.output(pdf_buffer)
     pdf_buffer.seek(0)
+
+    st.download_button(
+        label="📄 Download as PDF",
+        data=pdf_buffer,
+        file_name="PoeticLoveAI.pdf",
+        mime="application/pdf"
+    )
